@@ -2,3 +2,4 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://${DB_USER:adesdsilva}:${DB_PASSWORD}@webfluxcluster.q3gqtwu.mongodb.net/${DB_NAME:webflux}?retryWrites=true&w=majority
+      auto-index-creation: true
