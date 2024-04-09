@@ -6,6 +6,9 @@ import setecolinas.com.webflux.entity.User;
 import setecolinas.com.webflux.model.mapper.UserMapper;
 import setecolinas.com.webflux.model.repository.UserRepository;
 import setecolinas.com.webflux.model.request.UserRequest;
+import setecolinas.com.webflux.model.service.exception.ObjectNotFoundException;
+
+import static java.lang.String.format;
 
 @Service
 public class UserService {
@@ -23,6 +26,13 @@ public class UserService {
     }
 
     public Mono<User> findById(final String id){
-        return this.userRepository.findById(id);
+        return this.userRepository
+                .findById(id)
+                .switchIfEmpty(Mono.error(
+                        new ObjectNotFoundException(
+                                format("Object not found. Id: %s, Type: %s",
+                                        id, User.class.getSimpleName())
+                        )
+                ));
     }
 }

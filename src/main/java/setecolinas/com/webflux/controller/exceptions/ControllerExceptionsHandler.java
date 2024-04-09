@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import reactor.core.publisher.Mono;
+import setecolinas.com.webflux.model.service.exception.ObjectNotFoundException;
 
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ControllerAdvice
 public class ControllerExceptionsHandler {
@@ -49,5 +51,19 @@ public class ControllerExceptionsHandler {
             return "Email already registered!";
         }
         return "Duplicate Key Exception";
+    }
+
+    @ExceptionHandler(ObjectNotFoundException.class)
+    ResponseEntity<Mono<StandandError>> objectNotFoundException(
+            ObjectNotFoundException ex, ServerHttpRequest request
+    ){
+        return ResponseEntity.status(NOT_FOUND)
+                .body(Mono.just(StandandError.builder()
+                        .timestamp(now())
+                        .status(NOT_FOUND.value())
+                        .error(NOT_FOUND.getReasonPhrase())
+                        .message(ex.getMessage())
+                        .path(request.getPath().toString())
+                        .build()));
     }
 }
