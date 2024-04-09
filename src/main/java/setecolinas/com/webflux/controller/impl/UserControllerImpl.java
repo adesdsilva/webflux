@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import setecolinas.com.webflux.controller.UserController;
+import setecolinas.com.webflux.model.mapper.UserMapper;
 import setecolinas.com.webflux.model.request.UserRequest;
 import setecolinas.com.webflux.model.response.UserResponse;
 import setecolinas.com.webflux.model.service.UserService;
@@ -16,9 +17,11 @@ import setecolinas.com.webflux.model.service.UserService;
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
+    private final UserMapper userMapper;
 
-    public UserControllerImpl(UserService userService) {
+    public UserControllerImpl(UserService userService, UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -30,7 +33,10 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<Mono<UserResponse>> findById(String id) {
-        return null;
+        return ResponseEntity
+                .ok()
+                .body(this.userService.findById(id)
+                .map(this.userMapper::toResponse));
     }
 
     @Override

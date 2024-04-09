@@ -6,7 +6,6 @@ import setecolinas.com.webflux.entity.User;
 import setecolinas.com.webflux.model.mapper.UserMapper;
 import setecolinas.com.webflux.model.repository.UserRepository;
 import setecolinas.com.webflux.model.request.UserRequest;
-import setecolinas.com.webflux.model.response.UserResponse;
 
 @Service
 public class UserService {
@@ -23,7 +22,7 @@ public class UserService {
         return this.userRepository.save(this.userMapper.toEntity(request));
     }
 
-    public Mono<UserResponse> findById(final String id){
+    public Mono<User> findById(final String id){
         return this.userRepository.findById(id);
     }
 }
