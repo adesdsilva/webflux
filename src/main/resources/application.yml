@@ -1,0 +1,4 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://adesdsilva:<password>@webfluxcluster.q3gqtwu.mongodb.net/webflux?retryWrites=true&w=majority
