@@ -1,4 +1,20 @@
 package setecolinas.com.webflux.model.request;
 
-public record UserRequest(String name, String email, String password) {
-}
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public record UserRequest(
+
+        @Size(min = 4, max = 50, message = "must be between 4 and 50 characters")
+        @NotBlank(message = "must not be null or empty")
+        String name,
+
+        @Email(message = "invalitaded format field email")
+        @NotBlank(message = "must not be null or empty")
+        String email,
+
+        @Size(min = 4, max = 50, message = "must be between 4 and 30 characters")
+        @NotBlank(message = "must not be null or empty")
+        String password)
+{}
