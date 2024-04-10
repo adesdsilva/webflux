@@ -48,6 +48,11 @@ public class UserService {
     }
 
     public Mono<User> delete(final String id){
-        return this.userRepository.findAndRemove(id);
+        return this.userRepository.findAndRemove(id)
+                .switchIfEmpty(
+                        Mono.error(
+                                new ObjectNotFoundException(
+                                        format("Object not found. Id: %s, Type: %s",
+                                                id, User.class.getSimpleName()))));
     }
 }
