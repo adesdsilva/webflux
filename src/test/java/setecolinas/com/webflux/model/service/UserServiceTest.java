@@ -1,5 +1,6 @@
 package setecolinas.com.webflux.model.service;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -14,9 +15,11 @@ import setecolinas.com.webflux.entity.User;
 import setecolinas.com.webflux.model.mapper.UserMapper;
 import setecolinas.com.webflux.model.repository.UserRepository;
 import setecolinas.com.webflux.model.request.UserRequest;
+import setecolinas.com.webflux.model.service.exception.ObjectNotFoundException;
 
 import java.util.Objects;
 
+import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -116,5 +119,18 @@ class UserServiceTest {
                 .verify();
 
         verify(this.userRepository, times(1)).findAndRemove(anyString());
+    }
+
+    @Test
+    void testHandlerNotFound() {
+        when(this.userRepository.findById(anyString())).thenReturn(Mono.empty());
+
+        try{
+            userService.findById("123").block();
+        } catch (Exception e){
+            assertEquals(ObjectNotFoundException.class, e.getClass());
+            assertEquals(format("Object not found. Id: %s, Type: %s",
+                    "123", User.class.getSimpleName()), e.getMessage());
+        }
     }
 }
