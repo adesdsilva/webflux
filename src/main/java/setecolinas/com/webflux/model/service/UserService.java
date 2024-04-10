@@ -46,4 +46,8 @@ public class UserService {
                 .map(entity -> userMapper.toEntity(request, entity))
                 .flatMap(userRepository::save);
     }
+
+    public Mono<User> delete(final String id){
+        return this.userRepository.findAndRemove(id);
+    }
 }
