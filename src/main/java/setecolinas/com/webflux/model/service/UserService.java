@@ -1,6 +1,7 @@
 package setecolinas.com.webflux.model.service;
 
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import setecolinas.com.webflux.entity.User;
 import setecolinas.com.webflux.model.mapper.UserMapper;
@@ -34,5 +35,9 @@ public class UserService {
                                         id, User.class.getSimpleName())
                         )
                 ));
+    }
+
+    public Flux<User> findAll(){
+        return this.userRepository.findAll();
     }
 }
