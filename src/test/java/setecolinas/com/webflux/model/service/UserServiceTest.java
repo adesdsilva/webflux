@@ -1,12 +1,9 @@
 package setecolinas.com.webflux.model.service;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -63,9 +60,7 @@ class UserServiceTest {
         Mono<User> result = userService.findById("1235");
 
         StepVerifier.create(result)
-                .expectNextMatches(user -> user.getClass() == User.class &&
-                        Objects.nonNull(user) &&
-                        user.getId().equals("1235"))
+                .expectNextMatches(user -> user.getClass() == User.class && user.getId().equals("1235"))
                 .expectComplete()
                 .verify();
 
